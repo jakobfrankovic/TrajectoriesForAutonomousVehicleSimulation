@@ -6,7 +6,7 @@ class Trajectories:
         """
         self.arrival_departure = arrival_departure
 
-    def get_trajectory_data(self, vm = 13, am = 3, x0 = -300):
+    def get_trajectory_data(self, density, vm = 13, am = 3, x0 = -300):
         """
         here we create matrix_all that contains tables. Each table contains tuples that state the y and x coordinate (i.e. (distance to crossing, time))
         """
@@ -57,8 +57,8 @@ class Trajectories:
                         table_xt.append(((tfull_local - tf_local)*vm - vm**2/(2*am) - am/2*(t_local-tstop)**2, t))
                     elif 0 <= t_local and t_local <= tdec:
                         table_xt.append((x0 + vm*t_local, t))
-                    t += 0.1
-                    t_local += 0.1  
+                    t += density
+                    t_local += density  
 
             else:
                 #use of equations stated in the assignment if the vehicle does not have to stop
@@ -74,8 +74,8 @@ class Trajectories:
                         table_xt.append((x0 + vm*t_local - (am/2)*(t_local - tdec)**2, t))
                     elif 0 <= t_local and t_local <= tdec:
                         table_xt.append((x0 + vm*t_local, t))
-                    t += 0.1
-                    t_local += 0.1
+                    t += density
+                    t_local += density
 
             #matrix_all contains data for multiple trajectories
             matrix_all.append(table_xt)
@@ -134,11 +134,11 @@ result1 = [(float(x[0]), float(x[1])) for x in result1]
 result2 = [(float(x[0]), float(x[1])) for x in result2]
 
 trajectory_1 = Trajectories(result1)
-trajectory_1.get_trajectory_data()
+trajectory_1.get_trajectory_data(density=0.1)
 trajectory_1.plot_up_to_down()
 
 trajectory_2 = Trajectories(result2)
-trajectory_2.get_trajectory_data()
+trajectory_2.get_trajectory_data(density=0.1)
 trajectory_2.plot_down_to_up()
 plt.show()
             
