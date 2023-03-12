@@ -40,7 +40,7 @@ class Trajectories:
 
             #distance if a vehicle stops for 0 seconds
             L = vm*(tf_local - vm/am) 
-            
+
             if L >= abs(x0):
                 #use of equations stated in the assignment if the vehicle has to stop
                 tacc = tfull_local - vm/am
@@ -134,11 +134,11 @@ result1 = [(float(x[0]), float(x[1])) for x in result1]
 result2 = [(float(x[0]), float(x[1])) for x in result2]
 
 trajectory_1 = Trajectories(result1)
-trajectory_1.full_stop_x()
+trajectory_1.get_trajectory_data()
 trajectory_1.plot_up_to_down()
 
 trajectory_2 = Trajectories(result2)
-trajectory_2.full_stop_x()
+trajectory_2.get_trajectory_data()
 trajectory_2.plot_down_to_up()
 plt.show()
             
