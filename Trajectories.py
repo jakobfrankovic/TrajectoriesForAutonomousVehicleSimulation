@@ -18,7 +18,7 @@ class Trajectories:
         matrix_all = [] 
         for arrival, departure in table_arrival_departure:
 
-            #we set the arrival in real world scenario
+            #we set the arrival in real world scenario. Here it arrives into the control region.
             arrival = arrival - abs(x0)/vm
 
             #time begins running at the arrival into the control region
@@ -29,7 +29,8 @@ class Trajectories:
 
             #start of crossing the intersection is equal to the departure
             tf = departure
-            if tf - tf_previous == 1:
+            print(tf - tf_previous)
+            if round(tf - tf_previous, 4) == 1.0:
                 pass #tfull stays the same for the whole platoon
             else:
                 tfull = tf
@@ -48,7 +49,7 @@ class Trajectories:
                 tacc = tfull_local - vm/am
                 tstop = tacc - (tf_local - vm/am - abs(x0)/vm)
                 tdec = tstop - vm/am
-                if departure > 28:
+                if departure > 28:#just for debugging
                     dummy = 0
                 while t_local <= tf_local:
                     if t > 28:
@@ -63,8 +64,8 @@ class Trajectories:
                         table_xt.append(((tfull_local - tf_local)*vm - vm**2/(2*am) - (am/2)*(t_local-tstop)**2, t))
                     elif 0 <= t_local and t_local <= tdec:
                         table_xt.append((x0 + vm*t_local, t))
-                    t += density
                     t_local += density  
+                    t += density
 
             else:
                 #use of equations stated in the assignment if the vehicle does not have to stop
@@ -80,8 +81,8 @@ class Trajectories:
                         table_xt.append((x0 + vm*t_local - (am/2)*(t_local - tdec)**2, t))
                     elif 0 <= t_local and t_local <= tdec:
                         table_xt.append((x0 + vm*t_local, t))
-                    t += density
                     t_local += density
+                    t += density
 
             #matrix_all contains data for multiple trajectories
             matrix_all.append(table_xt)
@@ -148,7 +149,10 @@ trajectory_1.plot_up_to_down()
 
 #trajectory_2 = Trajectories([(24.205-10, 30.8-10), (26.802-10, 31.8-10), (30.893-10, 32.8-10), (31.893-10, 33.8-10), (32.893-10, 34.8-10), (35.179-10, 35.8-10), (36.8-10, 36.8-10)])
 trajectory_2 = Trajectories(result2)
+
+##The problem is in these 3 inputs:
 #trajectory_2 = Trajectories([(24.205, 30.8), (26.802, 31.8), (30.893, 32.8)])
+##
 trajectory_2.get_trajectory_data(density=0.1)
 trajectory_2.plot_down_to_up()
 plt.show()
