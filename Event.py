@@ -1,12 +1,18 @@
-class Event :
+from typing import *
+class Event:
     ARRIVAL = 0
     DEPARTURE = 1
-    # constant for arrival type
-    # constant for departure type
-    def __init__ ( self, typ, time):
+
+    def __init__(self, typ, time : int | float, car=None):  # type is a reserved word
         self.type = typ
         self.time = time
-    # type is a reserved word
-    def __lt__ ( self , other ):
-        # compare to other events
-        return  self.time < other.time
+        self.car = car
+
+    def __lt__(self, other) -> bool:
+        """Method that returns whether an event takes place earlier or later than some other event"""
+        return self.time < other.time
+
+    def __str__(self) -> str:
+        """String representation of the event"""
+        s = ("Arrival", "Departure")
+        return s[self.type] + "of customer" + str(self.customer) + "at t =" + str(self.time)
