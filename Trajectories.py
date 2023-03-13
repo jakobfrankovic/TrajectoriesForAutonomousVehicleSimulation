@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import math
 class Trajectories:
     def __init__(self, arrival_departure):
         """ 
@@ -36,8 +37,9 @@ class Trajectories:
             #because the given equations in the assignment want us to start from t = 0, we need to recalibrate all other used constants too
             tfull_local = abs(tfull - arrival)
             tf_local = abs(tf - arrival)
+            
             t_local = 0
-
+            
             #distance if a vehicle stops for 0 seconds
             L = vm*(tf_local - vm/am) 
 
@@ -46,15 +48,19 @@ class Trajectories:
                 tacc = tfull_local - vm/am
                 tstop = tacc - (tf_local - vm/am - abs(x0)/vm)
                 tdec = tstop - vm/am
+                if departure > 28:
+                    dummy = 0
                 while t_local <= tf_local:
+                    if t > 28:
+                        dummy = 0
                     if tfull_local <= t_local and t_local <= tf_local:
                         table_xt.append(((t_local-tf_local)*vm, t))
                     elif tacc <= t_local and t_local <= tfull_local:
-                        table_xt.append(((tfull_local-tf_local)*vm - vm**2/(2*am) + am/2*(t_local - tacc)**2, t))
+                        table_xt.append(((tfull_local-tf_local)*vm - vm**2/(2*am) + (am/2)*(t_local - tacc)**2, t))
                     elif tstop <= t_local and t_local <= tacc:
                         table_xt.append(((tfull_local - tf_local)*vm - vm**2/(2*am), t))
                     elif tdec <= t_local and t_local <= tstop:
-                        table_xt.append(((tfull_local - tf_local)*vm - vm**2/(2*am) - am/2*(t_local-tstop)**2, t))
+                        table_xt.append(((tfull_local - tf_local)*vm - vm**2/(2*am) - (am/2)*(t_local-tstop)**2, t))
                     elif 0 <= t_local and t_local <= tdec:
                         table_xt.append((x0 + vm*t_local, t))
                     t += density
@@ -62,9 +68,9 @@ class Trajectories:
 
             else:
                 #use of equations stated in the assignment if the vehicle does not have to stop
-                tacc = tfull_local - ((tf_local*vm - abs(x0))/am)**(1/2)
+                tacc = tfull_local - math.sqrt((tf_local*vm - abs(x0))/am)
                 tstop = tacc
-                tdec = tacc - ((tf_local*vm - abs(x0))/am)**(1/2)
+                tdec = tacc - math.sqrt((tf_local*vm - abs(x0))/am)
                 while t_local <= tf_local:
                     if tfull_local <= t_local and t_local <= tf_local:
                         table_xt.append(((t_local - tf_local)*vm, t))
@@ -137,10 +143,13 @@ trajectory_1 = Trajectories(result1)
 trajectory_1.get_trajectory_data(density=0.1)
 trajectory_1.plot_up_to_down()
 
+
+
+
+#trajectory_2 = Trajectories([(24.205-10, 30.8-10), (26.802-10, 31.8-10), (30.893-10, 32.8-10), (31.893-10, 33.8-10), (32.893-10, 34.8-10), (35.179-10, 35.8-10), (36.8-10, 36.8-10)])
 trajectory_2 = Trajectories(result2)
+#trajectory_2 = Trajectories([(24.205, 30.8), (26.802, 31.8), (30.893, 32.8)])
 trajectory_2.get_trajectory_data(density=0.1)
 trajectory_2.plot_down_to_up()
 plt.show()
             
-
-#error between t= 3.39 and 6.18. Around 6.18 big jump
