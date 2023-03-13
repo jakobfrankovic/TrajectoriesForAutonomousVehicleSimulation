@@ -17,6 +17,7 @@ class Lane:
         car: Car = Car(arrTime) #declare a new car instance
         self.cars.append(car)
 
+
 def createLanes(nLanes):
     """Function that adds nLanes Lane objects to a list and returns it"""
     assert type(nLanes) == int

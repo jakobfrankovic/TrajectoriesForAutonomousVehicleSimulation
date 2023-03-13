@@ -6,8 +6,7 @@ from typing import *
 
 class Simulation:
     """Simulation object"""
-    def __init__(self, switchMethod, arrDist):
-        self.switchMethod = switchMethod #either cyclic exhaustive or FCFS
+    def __init__(self, arrDist):
         self.arrDist = arrDist #arrival distributions of the cars
 
     def Simulate(self, T, nLanes):
