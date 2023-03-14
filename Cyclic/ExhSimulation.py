@@ -6,11 +6,17 @@ from SimResults import *
 from FES import *
 from collections import deque
 
+class Car:
+    """Class for car objects"""
+    def __init__(self, arrivalTime, lane):
+        self.arrivalTime = arrivalTime
+        self.lane = lane
+
 class Event:
     ARRIVAL = 0
     DEPARTURE = 1
 
-    def __init__(self, typ, time : int | float, car=None):  # type is a reserved word
+    def __init__(self, typ, time : int | float, car):  # type is a reserved word
         self.type = typ
         self.time = time
         self.car = car
@@ -24,11 +30,6 @@ class Event:
         s = ("Arrival", "Departure")
         return s[self.type] + "of customer" + str(self.customer) + "at t =" + str(self.time)
 
-class Car:
-    """Class for car objects"""
-    def __init__(self, arrivalTime, lane):
-        self.arrivalTime = arrivalTime
-        self.lane = lane
 
 class Lane:
     """Lane/queue object"""
@@ -139,7 +140,7 @@ class ExhaustiveSimulation:
                         dep = Event(Event.DEPARTURE, t, c1)
                         previousDepartureTime = t
                         fes.add(dep)
-                arr = Event(Event.ARRIVAL, min(arrival0[0], arrival1[0]))
+                arr = Event(Event.ARRIVAL, min(arrival0[0], arrival1[0]), Car(t, c1.lane))
                 fes.add(arr)
 
 
