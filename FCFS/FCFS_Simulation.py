@@ -1,6 +1,6 @@
 from collections import deque
 import pandas as pd
-import Customer 
+import Car 
 import Event as ev
 import SimResults 
 import FES 
@@ -15,13 +15,13 @@ class GGcSimulation :
 
         def getNextCar(arrDist, arrDist2):
             if len(arrDist2) == 0:
-                nextCar = Customer.Customer(arrDist.pop(0), 0)
+                nextCar = Car.Car(arrDist.pop(0), 0)
             elif len(arrDist) ==0:
-                nextCar = Customer.Customer(arrDist2.pop(0), 1)
+                nextCar = Car.Car(arrDist2.pop(0), 1)
             elif arrDist[0] < arrDist2[0]:
-                nextCar = Customer.Customer(arrDist.pop(0), 0)
+                nextCar = Car.Car(arrDist.pop(0), 0)
             else:
-                nextCar = Customer.Customer(arrDist2.pop(0), 1)
+                nextCar = Car.Car(arrDist2.pop(0), 1)
             return nextCar
         
         fes = FES.FES() # future event set
@@ -43,7 +43,7 @@ class GGcSimulation :
             currentLane = 1
 
         t = 0 # current time
-        c0 = Customer.Customer(earliestTime, currentLane) # first customer
+        c0 = Car.Car(earliestTime, currentLane) # first car
         firstEvent = ev.Event(ev.Event.ARRIVAL , c0.arrivalTime , c0)
 
         # print("Arrival " + str(c0.arrivalTime))
@@ -53,11 +53,11 @@ class GGcSimulation :
             # print(len(queue))
             e = fes.next() # jump to next event
             t = e.time # update the time
-            c1 = e.customer # customer associated with this event
+            c1 = e.car # car associated with this event
             res.registerQueueLength(t, len(queue)) # register queue length
 
             if e.type == ev.Event.ARRIVAL: # handle an arrival event
-                queue.append(c1) # add customer to the queue
+                queue.append(c1) # add car to the queue
                 if len(queue) <= self.nrServers : # there was a free server
                     res.registerWaitingTime(t - c1.arrivalTime)
                     if c1.lane == currentLane  :
@@ -83,12 +83,12 @@ class GGcSimulation :
             elif e.type == ev.Event.DEPARTURE : # handle a departure event 
                 # print("Departure " + str(t))
                 previousDepartureTime = t
-                queue.remove(c1) # remove the customer
+                queue.remove(c1) # remove the car
                 res.registerWaitingTime(t - c1.arrivalTime)
                 # print(t - c1.arrivalTime)
 
                 if len(queue) >= self.nrServers : # someone was waiting
-                    c2 = queue[self.nrServers-1] # longest waiting customer
+                    c2 = queue[self.nrServers-1] # longest waiting car
                     # res.registerWaitingTime(t - c2.arrivalTime)
 
                     # If lanes are changed then time added is different
