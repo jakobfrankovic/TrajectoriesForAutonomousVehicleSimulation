@@ -111,8 +111,8 @@ dataframe = pd.read_excel('arrivals30.xlsx', header=None)
 arrivalTime1 = dataframe[dataframe.columns[0]].to_list()
 arrivalTime2 = dataframe[dataframe.columns[1]].to_list()
 
-# arrivalTime1 = arrivalTime1[:10]
-# arrivalTime2 = arrivalTime2[:10]
+# arrivalTime1 = arrivalTime1[:50]
+# arrivalTime2 = arrivalTime2[:50]
 
 # arrivalTime1 = [1, 2, 4.816, 9.158]
 # arrivalTime2 = [2.309, 3.309, 5.169, 6.985, 8.051, 9.996]
